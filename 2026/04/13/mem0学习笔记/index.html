@@ -14,7 +14,7 @@
 <meta property="og:description" content="mem0可以说是做Agent长期记忆的一个很经典的框架了，所以这次特地找了个周末好好学了一下这个框架。 mem0 是什么？它由哪些组件组成？如果剥去花哨的外衣，Mem0 本质上是一个面向 LLM 长期记忆的 Harness工程。 它自己不生产算力和存储，而是定义了一套“记忆提取 -&gt; 冲突检测 -&gt; 自动更新”的标准化 Workflow，并通过工厂模式提供了极强的可插拔性。这种设计的巧">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-04-12T19:05:00.000Z">
-<meta property="article:modified_time" content="2026-04-12T19:09:37.296Z">
+<meta property="article:modified_time" content="2026-04-13T03:08:31.489Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -169,7 +169,7 @@
 <p><strong>小结：</strong></p>
 <p><strong>大模型应用落地，80% 的代码量其实都在做各种 Edge Case 的兼容和数据清洗的脏活</strong>。Mem0 之所以能被称作一个成熟的框架，很大程度上是因为它替开发者把这些脏活累活全包了。</p>
 <hr>
-<h2 id="mem0是专门做长期记忆的？"><a href="#mem0是专门做长期记忆的？" class="headerlink" title="mem0是专门做长期记忆的？"></a>mem0是专门做长期记忆的？</h2><p>经过前面的铺垫，我们有了标准的配置引擎、百搭的底层工厂，以及专门防范大模型发疯的清洗专员。现在，所有的准备工作都已经就绪。我们终于可以谈谈 Mem0 真正的大脑——<code>memory/main.py</code>了。也是整个框架作为“Agent”而非“死板数据库”的灵魂所在。</p>
+<h2 id="mem0是怎么做长期记忆的？"><a href="#mem0是怎么做长期记忆的？" class="headerlink" title="mem0是怎么做长期记忆的？"></a>mem0是怎么做长期记忆的？</h2><p>经过前面的铺垫，我们有了标准的配置引擎、百搭的底层工厂，以及专门防范大模型发疯的清洗专员。现在，所有的准备工作都已经就绪。我们终于可以谈谈 Mem0 真正的大脑——<code>memory/main.py</code>了。也是整个框架作为“Agent”而非“死板数据库”的灵魂所在。</p>
 <p>在这个文件里，对外暴露的 API 主要分为两类：</p>
 <ul>
 <li><strong>纯 CRUD 接口</strong>：<code>update()</code>, <code>delete()</code>, <code>get()</code>, <code>get_all()</code>。它们直接操作底层数据库，不涉及大模型的思考。</li>
@@ -227,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2026/04/13/mem0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnw51tta00006c0fgd291g2k" data-title="mem0学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2026/04/13/mem0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnwo4d1g0000zo0f8g0xgnti" data-title="mem0学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
