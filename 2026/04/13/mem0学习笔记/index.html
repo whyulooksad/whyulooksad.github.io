@@ -9,7 +9,7 @@
   <meta name="description" content="mem0可以说是做Agent长期记忆的一个很经典的框架了，所以这次特地找了个周末好好学了一下这个框架。 mem0 是什么？它由哪些组件组成？如果剥去花哨的外衣，Mem0 本质上是一个面向 LLM 长期记忆的 Harness工程。 它自己不生产算力和存储，而是定义了一套“记忆提取 -&gt; 冲突检测 -&gt; 自动更新”的标准化 Workflow，并通过工厂模式提供了极强的可插拔性。这种设计的巧">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mem0学习笔记">
-<meta property="og:url" content="http://example.com/2026/04/13/mem0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:url" content="https://whyulooksad.github.io/2026/04/13/mem0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="mem0可以说是做Agent长期记忆的一个很经典的框架了，所以这次特地找了个周末好好学了一下这个框架。 mem0 是什么？它由哪些组件组成？如果剥去花哨的外衣，Mem0 本质上是一个面向 LLM 长期记忆的 Harness工程。 它自己不生产算力和存储，而是定义了一套“记忆提取 -&gt; 冲突检测 -&gt; 自动更新”的标准化 Workflow，并通过工厂模式提供了极强的可插拔性。这种设计的巧">
 <meta property="og:locale" content="en_US">
@@ -24,6 +24,10 @@
     <link rel="shortcut icon" href="/favicon.png">
   
   
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
@@ -35,12 +39,26 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
+
+  
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
 <!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
-
 <body>
   <div id="container">
     <div id="wrap">
@@ -70,7 +88,7 @@
         <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://whyulooksad.github.io"></form>
       </div>
     </div>
   </div>
@@ -231,7 +249,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2026/04/13/mem0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnyvm98x0001780facif1jy7" data-title="mem0学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://whyulooksad.github.io/2026/04/13/mem0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnyw0buy0001xc0f9oiud44w" data-title="mem0学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
