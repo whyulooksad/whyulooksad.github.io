@@ -144,7 +144,7 @@
 <p>就是正常的归一化过程，没什么好多说的。</p>
 <h4 id="Transformer-推理第五步：FFN-残差连接"><a href="#Transformer-推理第五步：FFN-残差连接" class="headerlink" title="Transformer 推理第五步：FFN &amp; 残差连接"></a><strong>Transformer 推理第五步：FFN &amp; 残差连接</strong></h4><p>引入前馈神经网络是为了通过非线性变换增加模型的表达能力。</p>
 <p>FFN的处理过程：</p>
-<p>输入矩阵 → 线性层1（升维）→ 激活函数 → 线性层2（将维）→ 残差连接 → 最终输出</p>
+<p>输入矩阵 → 线性层1（升维）→ 激活函数 → 线性层2（降维）→ 残差连接 → 最终输出</p>
 <p><img src="https://cdn.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260415030441966.png" alt="image-20260415030441839"></p>
 <h2 id="输出：Liner层-Softmax层"><a href="#输出：Liner层-Softmax层" class="headerlink" title="输出：Liner层 &amp; Softmax层"></a><strong>输出</strong>：Liner层 &amp; Softmax层</h2><h4 id="Transformer-推理第六步：Liner层-Softmax层"><a href="#Transformer-推理第六步：Liner层-Softmax层" class="headerlink" title="Transformer 推理第六步：Liner层 &amp; Softmax层"></a><strong>Transformer 推理第六步：Liner层 &amp; Softmax层</strong></h4><p>解码器栈的输出是一个 float 向量。怎么把这个向量转换为一个词呢？通过一个线性层再加上一个 Softmax 层实现。</p>
 <p>线性层是一个简单的全连接神经网络，其将解码器栈的输出向量映射到一个更长的向量，这个向量被称为 logits 向量。</p>
@@ -177,7 +177,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://whyulooksad.github.io/2026/04/14/Transformer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnz0c04c00000o0fbolrga03" data-title="Transformer学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://whyulooksad.github.io/2026/04/14/Transformer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnz1at2u0000w40fc93vfpmj" data-title="Transformer学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -343,7 +343,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://whyulooksad.github.io/2026/04/13/mem0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnz0c04g00010o0f4wes2wjt" data-title="mem0学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://whyulooksad.github.io/2026/04/13/mem0%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnz1at330001w40f7bf14dfk" data-title="mem0学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
