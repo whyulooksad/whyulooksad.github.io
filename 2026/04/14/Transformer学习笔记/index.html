@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260415030408236.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260415030441966.png">
 <meta property="article:published_time" content="2026-04-13T17:11:33.000Z">
-<meta property="article:modified_time" content="2026-04-14T19:49:14.889Z">
+<meta property="article:modified_time" content="2026-04-15T03:22:46.819Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260415025317216.png">
@@ -148,7 +148,7 @@
 <h4 id="Transformer-推理第四步：LayerNorm-残差连接"><a href="#Transformer-推理第四步：LayerNorm-残差连接" class="headerlink" title="Transformer 推理第四步：LayerNorm &amp; 残差连接"></a><strong>Transformer 推理第四步：LayerNorm &amp; 残差连接</strong></h4><p>LayerNorm即Layer Normalization，是 Transformer中的层归一化，主要是为了稳定训练过程，防止梯度爆炸或消失。在《 Attention is All you need 》中位于残差连接之后，前馈网络之前。但在现如今大多位于残差连接之前。</p>
 <p>先说一下残差连接，首次在《Deep Residual Learning for Image Recognition》中被提出，这篇论文是目前ai领域引用最高的论文。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260415030408236.png" alt="image-20260415030408099"></p>
-<p>残差连接的核心思想是将输入直接“跳过”子层加到输出上。残差连接解决了深层网络训练困难，网络更深性能反而下降的问题。</p>
+<p>残差连接的核心思想是将输入直接“跳过”子层加到输出上。也就是说遇到训练后效果下降的子层，会直接赋予一个很低的权重，将这个子层带来的训练效果的影响降到很低，从而选择性地保留训练效果好的子层。残差连接解决了深层网络训练困难，网络更深性能反而下降的问题。</p>
 <p>然后是LayerNorm：</p>
 <p>输入矩阵（经过注意力或者经过注意力和残差连接）→ 计算均值 → 计算标准差 → 标准化 → 缩放和平移 → 得到归一化后的矩阵。</p>
 <p>就是正常的归一化过程，没什么好多说的。</p>
@@ -187,7 +187,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://whyulooksad.github.io/2026/04/14/Transformer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnz1c1nc0000ag0f85vyhpl2" data-title="Transformer学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://whyulooksad.github.io/2026/04/14/Transformer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmnzhn4nx0000b40f5tbo3i32" data-title="Transformer学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
