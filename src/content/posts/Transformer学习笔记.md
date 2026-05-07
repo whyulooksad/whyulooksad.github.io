@@ -7,8 +7,6 @@ category: AI
 draft: false
 ---
 
-这段时间在找实习，想着把之前学的东西都系统地复习一遍，先从Transformer开始
-
 # Transformer概述
 
 2017 年，Google 在论文《 Attention is All you need 》中提出了 Transformer 模型，其使用 Self-Attention 结构取代了在 NLP  任务中常用的 RNN 网络结构。相比 RNN 网络结构，其最大的优点是可以**并行计算**和**长距离信息捕捉**。Transformer 的整体模型架构如下图所示：

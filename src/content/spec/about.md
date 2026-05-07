@@ -2,6 +2,6 @@
 
 欢迎来到我的博客！
 
-AI Player | Security Researcher
+AI & Security Researcher
 
 ::github{repo="whyulooksad/whyulooksad.github.io"}
