@@ -2,6 +2,6 @@
 
 欢迎来到我的博客！
 
-Security Researcher | CTF Player
+AI Player | Security Researcher
 
-::github{repo="0xh3y3/0xh3y3.github.io"}
+::github{repo="whyulooksad/whyulooksad.github.io"}
