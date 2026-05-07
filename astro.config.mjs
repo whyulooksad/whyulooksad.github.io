@@ -26,7 +26,7 @@ import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-cop
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://0xh3y3.github.io/",
+	site: "https://whyulooksad.github.io/",
 	base: "/",
 	trailingSlash: "always",
 	integrations: [
