@@ -1,8 +1,8 @@
 ---
 title: 'mem0学习笔记'
-published: 2026-04-13
+published: 2026-04-12
 description: 'mem0可以说是做Agent长期记忆的一个很经典的框架了，所以这次特地找了个周末好好学了一下这个框架。'
-tags: [AI, Agent, Memory, LLM, Harness]
+tags: [AI, Agent, Memory, Harness]
 category: AI
 draft: false
 ---
