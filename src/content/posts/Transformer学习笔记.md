@@ -1,11 +1,13 @@
 ---
 title: 'Transformer学习笔记'
 published: 2026-04-28
-description: '这段时间在找实习，想着把之前学的东西都系统地复习一遍，先从Transformer开始'
+description: '这段时间在找实习，想着把之前学的东西都系统地复习一遍，先从Transformer开始！'
 tags: [AI, LLM, Transformer, 深度学习]
 category: AI
 draft: false
 ---
+
+这段时间在找实习，想着把之前学的东西都系统地复习一遍，先从Transformer开始！
 
 # Transformer概述
 
