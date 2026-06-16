@@ -516,7 +516,9 @@ Start training...
 
 上面我们说的都是单GPU的情况，如果想去做多卡训练，也很简单：
 
-1.在项目根目录新建ds_zero2.json，怎么写可以参考：https://huggingface.co/docs/accelerate/usage_guides/deepspeed。也可以参考我这个：
+1.在项目根目录新建ds_zero2.json，怎么写可以参考：https://huggingface.co/docs/accelerate/usage_guides/deepspeed。
+
+也可以参考我这个：
 
 ```
 {

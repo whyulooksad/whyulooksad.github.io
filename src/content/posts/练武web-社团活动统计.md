@@ -2,7 +2,7 @@
 title: 'ISCC2026社团活动统计WP'
 published: 2026-06-05
 description: '一道挺有意思的题'
-tags: [Web, sql注入, bypass, CTF]
+tags: [Web, CTF]
 category: Web
 draft: false
 ---
