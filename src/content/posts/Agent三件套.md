@@ -2,7 +2,7 @@
 title: '2026年Agent三件套'
 published: 2026-06-12
 description: ''
-tags: [AI, Agent]
+tags: [Agent, A2A, MCP, Skills]
 category: AI
 draft: false
 ---

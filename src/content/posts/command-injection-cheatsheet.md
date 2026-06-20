@@ -3,7 +3,7 @@ title: '命令注入与拼接技巧速查'
 published: 2026-04-20
 description: 'CTF Web 命令注入常用拼接符、绕过技巧与实战 payload 汇总'
 tags: [Web, CTF]
-category: Web
+category: Security
 draft: false
 ---
 
