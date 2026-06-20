@@ -1,7 +1,7 @@
 ---
 title: '2026年Agent三件套'
 published: 2026-06-12
-description: ''
+description: '这次来谈谈A2A，MCP和Skills，写的很乱，算是给自己复习一遍吧。'
 tags: [Agent, A2A, MCP, Skills]
 category: AI
 draft: false
