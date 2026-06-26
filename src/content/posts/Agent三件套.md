@@ -1016,6 +1016,8 @@ if __name__ == "__main__":
 
 **Client.py**
 
+整体链路：`用户输入 → Client 调用大模型规划工具流程 → Client 依次调用 MCP Server 工具 → 收集工具结果再丢给大模型生成最终回答。`
+
 ```
 import asyncio
 import os
@@ -1032,17 +1034,18 @@ from mcp.client.stdio import stdio_client
 load_dotenv()
 
 class MCPClient:
-
+	# 基础依赖层：统一管理全局资源、大模型客户端、资源自动回收栈
     def __init__(self):
-        self.exit_stack = AsyncExitStack()
-        self.openai_api_key = os.getenv("DASHSCOPE_API_KEY")
+        self.exit_stack = AsyncExitStack()  # 异步资源管理器（核心）
+        self.openai_api_key = os.getenv("DASHSCOPE_API_KEY") # 读取.env大模型配置
         self.base_url = os.getenv("BASE_URL")
         self.model = os.getenv("MODEL")
         if not self.openai_api_key:
             raise ValueError("❌ 未找到 OpenAI API Key，请在 .env 文件中设置 DASHSCOPE_API_KEY")
-        self.client = OpenAI(api_key=self.openai_api_key, base_url=self.base_url)
-        self.session: Optional[ClientSession] = None
-
+        self.client = OpenAI(api_key=self.openai_api_key, base_url=self.base_url)  # 初始化大模型客户端
+        self.session: Optional[ClientSession] = None # MCP会话句柄
+	
+	# MCP 服务连接层：启动 MCP 服务子进程、建立双向 stdio 通信、初始化 MCP 会话、拉取服务端可用工具列表
     async def connect_to_server(self, server_script_path: str):
         # 对服务器脚本进行判断，只允许是 .py 或 .js
         is_python = server_script_path.endswith('.py')
@@ -1053,26 +1056,93 @@ class MCPClient:
         # 确定启动命令，.py 用 python，.js 用 node
         command = "python" if is_python else "node"
 
-        # 构造 MCP 所需的服务器参数，包含启动命令、脚本路径参数、环境变量（为 None 表示默认）
+        # 构造 MCP 所需的服务器参数StdioServerParameters，包含启动命令、脚本路径参数、环境变量（为 None 表示默认）
         server_params = StdioServerParameters(command=command, args=[server_script_path], env=None)
 
-        # 启动 MCP 工具服务进程（并建立 stdio 通信）
+        # 启动 MCP 工具服务进程，stdio_client 创建 stdio 双向传输通信通道（子进程 stdin 写、stdout 读）
         stdio_transport = await self.exit_stack.enter_async_context(stdio_client(server_params))
 
-        # 拆包通信通道，读取服务端返回的数据，并向服务端发送请求
+        # 拆包通信通道：self.stdio(读流), self.write(写流)。作为 MCP 会话底层通信载体；
         self.stdio, self.write = stdio_transport
 
-        # 创建 MCP 客户端会话对象
+        # 创建 ClientSession（MCP 客户端会话对象，封装协议方法：list_tools/call_tool）
         self.session = await self.exit_stack.enter_async_context(ClientSession(self.stdio, self.write))
 
-        # 初始化会话
+        # 初始化会话，执行 MCP 握手协议，建立正式通信；
         await self.session.initialize()
 
-        # 获取工具列表并打印
+        # list_tools() 拉取服务端所有工具，缓存下来供后续规划使用。
         response = await self.session.list_tools()
         tools = response.tools
         print("\n已连接到服务器，支持以下工具:", [tool.name for tool in tools])
+        
+        # 总的来说，底层通信模型就是：
+        # MCPClient(主程序) <==stdio管道==> server.py(工具服务进程)
+        # write → 往子进程stdin发请求（调用工具、查询工具列表）
+        # stdio → 读取子进程stdout返回结果
+        # ClientSession 封装了这套管道的MCP协议报文序列化/反序列化，不用手动拼JSON
 
+
+	# 工具链规划模块（自研核心逻辑，不属于原生 MCP）
+	# 设计目的：减少多轮 LLM 调用开销，一次性规划完整任务流程，适合固定流水线任务（情感分析→生成报告→发邮件）。
+	async def plan_tool_usage(self, query: str, tools: List[dict]) -> List[dict]:
+        # 构造系统提示词 system_prompt。
+        # 将所有可用工具组织为文本列表插入提示中，并明确指出工具名，
+        # 限定返回格式是 JSON，防止其输出错误格式的数据。
+        print("\n📤 提交给大模型的工具定义:")
+        print(json.dumps(tools, ensure_ascii=False, indent=2))
+        tool_list_text = "\n".join([
+            f"- {tool['function']['name']}: {tool['function']['description']}"
+            for tool in tools
+        ])
+        system_prompt = {
+            "role": "system",
+            "content": (
+                "你是一个智能任务规划助手，用户会给出一句自然语言请求。\n"
+                "你只能从以下工具中选择（严格使用工具名称）：\n"
+                f"{tool_list_text}\n"
+                "如果多个工具需要串联，后续步骤中可以使用 {{上一步工具名}} 占位。\n"
+                "返回格式：JSON 数组，每个对象包含 name 和 arguments 字段。\n"
+                "不要返回自然语言，不要使用未列出的工具名。"
+            )
+        }
+
+        # 构造对话上下文并调用模型。
+        # 将系统提示和用户的自然语言一起作为消息输入，并选用当前的模型。
+        planning_messages = [
+            system_prompt,
+            {"role": "user", "content": query}
+        ]
+
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=planning_messages,
+            tools=tools,
+            tool_choice="none"
+        )
+
+        # 提取出模型返回的 JSON 内容
+        content = response.choices[0].message.content.strip()
+        match = re.search(r"```(?:json)?\\s*([\s\S]+?)\\s*```", content)
+        if match:
+            json_text = match.group(1)
+        else:
+            json_text = content
+
+        # 在解析 JSON 之后返回调用计划
+        try:
+            plan = json.loads(json_text)
+            return plan if isinstance(plan, list) else []
+        except Exception as e:
+            print(f"❌ 工具调用链规划失败: {e}\n原始返回: {content}")
+            return []
+
+    async def cleanup(self):
+        await self.exit_stack.aclose()
+        
+        
+	# 业务主逻辑，整条流水线：
+	# 用户输入 → 生成报告文件名 → LLM 规划工具链 → 循环执行工具 → 汇总结果给 LLM 生成最终回答 → 本地保存对话日志
     async def process_query(self, query: str) -> str:
         # 准备初始消息和获取工具列表
         messages = [{"role": "user", "content": query}]
@@ -1170,6 +1240,7 @@ class MCPClient:
 
         return final_output
 
+	# 交互入口
     async def chat_loop(self):
         # 初始化提示信息
         print("\n🤖 MCP 客户端已启动！输入 'quit' 退出")
@@ -1188,60 +1259,7 @@ class MCPClient:
             except Exception as e:
                 print(f"\n⚠️ 发生错误: {str(e)}")
 
-    async def plan_tool_usage(self, query: str, tools: List[dict]) -> List[dict]:
-        # 构造系统提示词 system_prompt。
-        # 将所有可用工具组织为文本列表插入提示中，并明确指出工具名，
-        # 限定返回格式是 JSON，防止其输出错误格式的数据。
-        print("\n📤 提交给大模型的工具定义:")
-        print(json.dumps(tools, ensure_ascii=False, indent=2))
-        tool_list_text = "\n".join([
-            f"- {tool['function']['name']}: {tool['function']['description']}"
-            for tool in tools
-        ])
-        system_prompt = {
-            "role": "system",
-            "content": (
-                "你是一个智能任务规划助手，用户会给出一句自然语言请求。\n"
-                "你只能从以下工具中选择（严格使用工具名称）：\n"
-                f"{tool_list_text}\n"
-                "如果多个工具需要串联，后续步骤中可以使用 {{上一步工具名}} 占位。\n"
-                "返回格式：JSON 数组，每个对象包含 name 和 arguments 字段。\n"
-                "不要返回自然语言，不要使用未列出的工具名。"
-            )
-        }
-
-        # 构造对话上下文并调用模型。
-        # 将系统提示和用户的自然语言一起作为消息输入，并选用当前的模型。
-        planning_messages = [
-            system_prompt,
-            {"role": "user", "content": query}
-        ]
-
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=planning_messages,
-            tools=tools,
-            tool_choice="none"
-        )
-
-        # 提取出模型返回的 JSON 内容
-        content = response.choices[0].message.content.strip()
-        match = re.search(r"```(?:json)?\\s*([\s\S]+?)\\s*```", content)
-        if match:
-            json_text = match.group(1)
-        else:
-            json_text = content
-
-        # 在解析 JSON 之后返回调用计划
-        try:
-            plan = json.loads(json_text)
-            return plan if isinstance(plan, list) else []
-        except Exception as e:
-            print(f"❌ 工具调用链规划失败: {e}\n原始返回: {content}")
-            return []
-
-    async def cleanup(self):
-        await self.exit_stack.aclose()
+    
 
 
 async def main():
@@ -1251,6 +1269,7 @@ async def main():
         await client.connect_to_server(server_script_path)
         await client.chat_loop()
     finally:
+    	# 资源释放：关闭 AsyncExitStack，自动关闭 MCP 会话、杀掉 server 子进程，防止资源泄漏；
         await client.cleanup()
 
 
