@@ -9,7 +9,15 @@ const postsCollection = defineCollection({
 		description: z.string().optional().default(""),
 		image: z.string().optional().default(""),
 		tags: z.array(z.string()).optional().default([]),
-		category: z.string().optional().nullable().default(""),
+		category: z
+			.union([z.string(), z.array(z.string())])
+			.nullish()
+			.transform((v): string[] => {
+				if (!v) return [];
+				if (Array.isArray(v)) return v.map((s) => s.trim()).filter(Boolean);
+				return v.split(",").map((s) => s.trim()).filter(Boolean);
+			})
+			.default([]),
 		lang: z.string().optional().default(""),
 
 		/* For internal use */

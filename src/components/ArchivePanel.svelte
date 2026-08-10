@@ -19,7 +19,7 @@ interface Post {
 	data: {
 		title: string;
 		tags: string[];
-		category?: string;
+		category?: string[];
 		published: Date;
 	};
 }
@@ -54,12 +54,16 @@ onMount(async () => {
 
 	if (categories.length > 0) {
 		filteredPosts = filteredPosts.filter(
-			(post) => post.data.category && categories.includes(post.data.category),
+			(post) =>
+				Array.isArray(post.data.category) &&
+				post.data.category.some((cat) => categories.includes(cat)),
 		);
 	}
 
 	if (uncategorized) {
-		filteredPosts = filteredPosts.filter((post) => !post.data.category);
+		filteredPosts = filteredPosts.filter(
+			(post) => !post.data.category || post.data.category.length === 0,
+		);
 	}
 
 	const grouped = filteredPosts.reduce(
