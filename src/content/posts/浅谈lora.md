@@ -69,6 +69,14 @@ $$
 
 虽然Lora微调能极大地节省计算开销，但是能做全量微调还是尽量不要做 LoRA 微调，LoRA 微调精度有损失，只适用于部分简单场景，涉及重要能力的微调需用全量微调。
 
+前向：
+
+![951246378bac825f801188d5cb2eda2f](https://fastly.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260925015217108.jpg)
+
+反向：
+
+<img src="https://fastly.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260925015249681.jpg" alt="4785ba0eee64070c659880df9c513dcd" style="zoom: 33%;" />
+
 # 二、手撕实战
 
 这里以对`DeepSeek-R1-Distill-Qwen-7B`这个模型做医学问答方面的微调为例。
