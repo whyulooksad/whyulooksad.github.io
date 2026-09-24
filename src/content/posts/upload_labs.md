@@ -2,7 +2,7 @@
 title: 'upload学习笔记'
 published: 2026-04-17
 description: 'upload_labs Less1-21'
-tags: [Web, CTF, upload]
+tags: [Web, CTF]
 category: Security
 draft: false
 ---
@@ -490,7 +490,7 @@ imagecreatefromgif（）函数，二次渲染是由 Gif 文件或 URL 创建一�
 
 ![4c6cf93d-f88c-4340-8b4e-455ce1cc3919](https://fastly.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260730035639000.png)
 
-再重新上传。<?php phpinfo()?> 成功执行！这个题有意思！
+再重新上传。`<?php phpinfo()?>` 成功执行！这个题有意思！
 
 ![image-20260730035752202](https://fastly.jsdelivr.net/gh/whyulooksad/image_bed@main/images/20260730035752370.png)
 

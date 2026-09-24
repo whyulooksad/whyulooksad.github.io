@@ -2,7 +2,7 @@
 title: 'xss学习笔记'
 published: 2026-04-19
 description: 'xss_labs Less1-20'
-tags: [Web, CTF, XSS]
+tags: [Web, CTF]
 category: Security
 draft: false
 ---
