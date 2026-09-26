@@ -1,5 +1,5 @@
 ---
-title: 'CSRF学习笔记'
+title: 'csrf学习笔记'
 published: 2026-04-25
 description: 'PortswiggerLabs-CSRF'
 tags: [Web, CTF]
