@@ -1,7 +1,7 @@
 ---
 title: 'OWASP LLM Top 10学习笔记'
 published: 2026-09-24
-description: 'LLMVault'
+description: 'LLMVault WP'
 tags: [LLM, AI, CTF]
 category: [AI, Security]
 draft: false
